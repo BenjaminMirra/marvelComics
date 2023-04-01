@@ -23,7 +23,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const data = await res.json()
   // Pass data to the page via props
   return { props: { data } }
-
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -33,10 +32,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
     return { params: { id: comic.id.toString() } }
   })
   
-
   return {
     paths: paths || [],
-    fallback: false
+    fallback: 'blocking'
   }
 }
 

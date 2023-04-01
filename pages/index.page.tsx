@@ -23,7 +23,7 @@ const Index: NextPage = () => {
             const res = await fetch(`/api/comics?offset=${currentPageOffset}`)
             const data = await res.json()
             setTotalPage(Math.round(data?.total/12))
-            setComics(data?.results || comics)
+            setComics(data?.results)
         }
         setNewComics()
     }, [currentPageOffset])
@@ -50,7 +50,6 @@ const Index: NextPage = () => {
                                     <CardHero data={hero} key={hero.id}/>
                             )
                         })}
-
                     </Grid>
 
                 </div>

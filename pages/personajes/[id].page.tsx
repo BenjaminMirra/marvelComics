@@ -28,9 +28,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await fetch(`${process.env.MARVEL_API_URL}/characters?ts=1&apikey=${process.env.MARVEL_API_PUBLIC_KEY}&hash=639d2aec78a37199a9a9e83331302cac`)
+    const data = await res.json()
+  const paths = data.data.results?.map((comic : any) => {
+    return { params: { id: comic.id.toString() } }
+  })
+  
   return {
-    paths: [{ params: { id: '1011334' } }, { params: { id: '82965' } }],
-    fallback: false, // can also be true or 'blocking'
+    paths: paths || [],
+    fallback: 'blocking'
   }
 }
 
