@@ -5,9 +5,7 @@ import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
 import { Hero, HeroAPIResponse } from 'types';
 import CardHero from '../components/Card';
 import Grid from '@mui/material/Grid';
-import { Box, Pagination } from '@mui/material';
-import styles from '../styles/indexComic.module.css';
-
+import { Box, CircularProgress, Container, Pagination } from '@mui/material';
 
 // const Index: NextPage<{data : HeroAPIResponse}> = ({data} : {data : HeroAPIResponse}) => {
 const Index: NextPage = () => {
@@ -22,7 +20,7 @@ const Index: NextPage = () => {
         const setNewComics = async () => {
             const res = await fetch(`/api/comics?offset=${currentPageOffset}`)
             const data = await res.json()
-            setTotalPage(Math.round(data?.total/12))
+            setTotalPage(Math.round(data?.total / 12))
             setComics(data?.results)
         }
         setNewComics()
@@ -37,23 +35,40 @@ const Index: NextPage = () => {
             </Head>
 
             <BodySingle title={"Listado de Comics"}>
-                <div className={styles.container}>
-                    <Pagination page={page} onChange={(event,value)=>{
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    flexDirection='column'
+                >
+                    <Pagination page={page} onChange={(e, value) => {
                         setPage(value)
                         setCurrentPageOffset((value - 1) * 12);
                     }} count={totalPage} color="primary" />
                     <br />
-                    <Grid container
-                        spacing={2}>
+                    {
+                    comics ? 
+                    <Grid container spacing={8}
+                    >
                         {comics?.map((hero: Hero) => {
                             return (
-                                    <CardHero data={hero} key={hero.id}/>
+                                <Grid key={hero.id} item xs={3} md={4}>
+                                    <CardHero data={hero} />
+                                </Grid>
                             )
                         })}
                     </Grid>
-
-                </div>
-            </BodySingle>
+                    :
+                    <CircularProgress />
+                    }
+                    <br/>
+                    <Pagination page={page} onChange={(e, value) => {
+                        setPage(value)
+                        setCurrentPageOffset((value - 1) * 12);
+                    }} count={totalPage} color="primary" />
+                    <br/>
+                </Box>
+            </BodySingle >
         </>
     )
 }

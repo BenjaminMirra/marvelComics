@@ -9,7 +9,8 @@ import Image from 'next/image';
 
 const CardHero = ({ data }: any) => {
     return (
-        <Card sx={{ minWidth: 275, maxWidth: 275, minHeight: 400, maxHeight: 400 }}>
+        <Card sx={{ minWidth: 400, maxWidth: 300, minHeight: 400, maxHeight: 400,
+        display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
             <CardContent>
                 <Image
                     src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
@@ -21,9 +22,9 @@ const CardHero = ({ data }: any) => {
                     {data.title}
                 </Typography>
             </CardContent>
-            <CardActions>
-                <Button size="small">Comprar</Button>
-                <Button href={`/comics/${data.id}`} size="small">Ver Detalle</Button>
+            <CardActions sx={{minwidth:400, justifyContent: "space-around"}}>
+                <Button>Comprar</Button>
+                <Button href={`/comics/${data.id}`}>Ver Detalle</Button>
             </CardActions>
         </Card>
     )
