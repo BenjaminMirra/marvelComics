@@ -1,14 +1,13 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 
 const CharacterId = ({data} : any) => {
 
   return (
     <div>
-      <h1>{data.data.results[0].name}</h1>
+      <h1>{data.data.results[0].name}</h1> 
       <Image
                     src={`${data.data.results[0].thumbnail.path}.${data.data.results[0].thumbnail.extension}`}
                     alt={data.data.results[0].name}
