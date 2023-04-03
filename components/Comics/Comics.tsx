@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid';
-import HomeComicCard from '../HomeComicCard/HomeComicCard';
+import HomeComicCard from '../HomeComicCard/ComicCard';
 import { Box, CircularProgress, Pagination } from '@mui/material';
 import { Hero } from 'types';
 
@@ -27,38 +27,38 @@ const Comics = () => {
 
     return (
         <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection='column'
-    >
-        <Pagination page={page} onChange={(e, value) => {
-            setPage(value)
-            setCurrentPageOffset((value - 1) * 12);
-        }} count={totalPage} color="primary" />
-        <br />
-        {
-        comics.length > 0 ? 
-        <Grid container spacing={8}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection='column'
         >
-            {comics?.map((hero: Hero) => {
-                return (
-                    <Grid key={hero.id} item xs={3} md={4}>
-                        <HomeComicCard data={hero} />
+            <Pagination page={page} onChange={(e, value) => {
+                setPage(value)
+                setCurrentPageOffset((value - 1) * 12);
+            }} count={totalPage} color="primary" />
+            <br />
+            {
+                comics.length > 0 ?
+                    <Grid container spacing={8}
+                    >
+                        {comics?.map((hero: Hero) => {
+                            return (
+                                <Grid key={hero.id} item xs={3} md={4}>
+                                    <HomeComicCard data={hero} />
+                                </Grid>
+                            )
+                        })}
                     </Grid>
-                )
-            })}
-        </Grid>
-        :
-        <CircularProgress />
-        }
-        <br/>
-        <Pagination page={page} onChange={(e, value) => {
-            setPage(value)
-            setCurrentPageOffset((value - 1) * 12);
-        }} count={totalPage} color="primary" />
-        <br/>
-    </Box>
+                    :
+                    <CircularProgress />
+            }
+            <br />
+            <Pagination page={page} onChange={(e, value) => {
+                setPage(value)
+                setCurrentPageOffset((value - 1) * 12);
+            }} count={totalPage} color="primary" />
+            <br />
+        </Box>
     )
 }
 

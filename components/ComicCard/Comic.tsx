@@ -60,7 +60,7 @@ const ComicCard = ({ comic, characters }: any) => {
                         <Grid item>
                             <Typography sx={{ cursor: 'pointer' }} variant="body2">
                                 {comic.stock != 0 ?
-                                    <Button variant="contained" >
+                                    <Button variant="contained" href={`/checkout/${comic.id}`}>
                                         COMPRAR
                                     </Button>
                                     :
