@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FC, PropsWithChildren } from "react";
 import Container, { ContainerProps } from "@mui/material/Container";
 import { Stack, Typography } from "@mui/material";
+import fotoCV from '../../../../public/fotoCV.jpg'
 
 interface BodySingleProps extends PropsWithChildren {
     title?: string,

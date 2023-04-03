@@ -1,30 +1,12 @@
-import type { GetServerSideProps, NextPage } from 'next'
-import { useEffect, useState } from 'react'
+import type { NextPage } from 'next'
 import Head from 'next/head'
 import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
 import { Hero, HeroAPIResponse } from 'types';
-import CardHero from '../components/Card';
-import Grid from '@mui/material/Grid';
-import { Box, CircularProgress, Container, Pagination } from '@mui/material';
+import Comics from 'dh-marvel/components/Comics/Comics';
+
 
 // const Index: NextPage<{data : HeroAPIResponse}> = ({data} : {data : HeroAPIResponse}) => {
 const Index: NextPage = () => {
-
-    const [page, setPage] = useState(1)
-    const [comics, setComics] = useState([]);
-    const [totalPage, setTotalPage] = useState(1);
-    const [currentPageOffset, setCurrentPageOffset] = useState(0);
-
-
-    useEffect(() => {
-        const setNewComics = async () => {
-            const res = await fetch(`/api/comics?offset=${currentPageOffset}`)
-            const data = await res.json()
-            setTotalPage(Math.round(data?.total / 12))
-            setComics(data?.results)
-        }
-        setNewComics()
-    }, [currentPageOffset])
 
     return (
         <>
@@ -34,40 +16,8 @@ const Index: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <BodySingle title={"Listado de Comics"}>
-                <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    flexDirection='column'
-                >
-                    <Pagination page={page} onChange={(e, value) => {
-                        setPage(value)
-                        setCurrentPageOffset((value - 1) * 12);
-                    }} count={totalPage} color="primary" />
-                    <br />
-                    {
-                    comics ? 
-                    <Grid container spacing={8}
-                    >
-                        {comics?.map((hero: Hero) => {
-                            return (
-                                <Grid key={hero.id} item xs={3} md={4}>
-                                    <CardHero data={hero} />
-                                </Grid>
-                            )
-                        })}
-                    </Grid>
-                    :
-                    <CircularProgress />
-                    }
-                    <br/>
-                    <Pagination page={page} onChange={(e, value) => {
-                        setPage(value)
-                        setCurrentPageOffset((value - 1) * 12);
-                    }} count={totalPage} color="primary" />
-                    <br/>
-                </Box>
+            <BodySingle title={"Comics"}>
+                <Comics/>
             </BodySingle >
         </>
     )

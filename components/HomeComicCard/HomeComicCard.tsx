@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 
-const CardHero = ({ data }: any) => {
+const HomeComicCard = ({ data }: any) => {
     return (
         <Card sx={{ minWidth: 400, maxWidth: 300, minHeight: 400, maxHeight: 400,
         display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
@@ -23,11 +23,11 @@ const CardHero = ({ data }: any) => {
                 </Typography>
             </CardContent>
             <CardActions sx={{minwidth:400, justifyContent: "space-around"}}>
-                <Button>Comprar</Button>
+                <Button href={`/checkout/${data.id}`}>Comprar</Button>
                 <Button href={`/comics/${data.id}`}>Ver Detalle</Button>
             </CardActions>
         </Card>
     )
 }
 
-export default CardHero
+export default HomeComicCard

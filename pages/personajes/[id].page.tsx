@@ -1,54 +1,27 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Container, Typography } from '@mui/material'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Image from 'next/image'
 import React from 'react'
+import { getCharacter, getComicsCharacter } from 'dh-marvel/services/marvel/marvel.service';
+import BodySingle from 'dh-marvel/components/layouts/body/single/body-single';
+import CharacterCard from 'dh-marvel/components/CharacterCard/CharacterCard';
 
-
-const CharacterId = ({ data }: any) => {
+const CharacterId = ({ data, comics }: any) => {
 
   return (
-    <>
-    {data?.name}
-    </>
-    // <Container maxWidth="sm">
-    //   <Box>
-    //     <Image
-    //       src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
-    //       alt={data.name}
-    //       width={300}
-    //       height={300}
-    //     />
-    //   </Box>
-    //   <Box>
-    //     <Typography variant="h4" >
-    //     {data.name}
-    //   </Typography>
-
-    //     <Accordion>
-    //       <AccordionSummary
-    //         expandIcon={<ExpandMoreIcon />}
-    //         aria-controls="panel1a-content"
-    //         id="panel1a-header"
-    //       >
-    //         <span style={{ fontWeight: 1000 }}>Descripción:</span>
-    //       </AccordionSummary>
-    //       <AccordionDetails>
-    //         <Typography>
-    //           {data.description ? data.description : "-"}
-    //         </Typography>
-    //       </AccordionDetails>
-    //     </Accordion></Box>
-    // </Container>
+    <BodySingle title={data.name}>
+      <CharacterCard character={data} comics={comics}/>
+    </BodySingle>
   )
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const res = await fetch(`${process.env.MARVEL_API_URL}/characters/${params?.id}?ts=1&apikey=${process.env.MARVEL_API_PUBLIC_KEY}&hash=639d2aec78a37199a9a9e83331302cac`)
-  const data = await res.json()
-  // Pass data to the page via props
-  return { props: { data: data.data.results } }
-
+  const id = params?.id?.toString() || '0'
+  const data = await getCharacter(parseInt(id))
+  const comics = await getComicsCharacter(parseInt(id));
+  return {
+    props: {
+      data, comics
+    }
+  }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
