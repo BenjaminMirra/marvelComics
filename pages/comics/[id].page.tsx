@@ -1,14 +1,18 @@
 import { getCharactersComic, getComic, getComics } from 'dh-marvel/services/marvel/marvel.service';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import React from 'react'
+import React, { useEffect } from 'react'
 import ComicCard from 'dh-marvel/components/ComicCard/Comic';
 import BodySingle from 'dh-marvel/components/layouts/body/single/body-single';
+import { useUserContext } from 'dh-marvel/components/Provider/UserProvider';
+import { useBuyContext } from 'dh-marvel/components/Provider/BuyProvider';
 
 const ComicId = ({ comic , characters }: any) => {
 
+  const { order, addOrder } = useBuyContext();
+
   return (
     <BodySingle title={comic.title}>
-      <ComicCard comic={comic} characters={characters}/>
+      <ComicCard order={order} setOrder={addOrder} comic={comic} characters={characters}/>
     </BodySingle>
   )
 }

@@ -1,6 +1,6 @@
-import { Stack, Alert, AlertProps } from "@mui/material";
+import { Stack, AlertProps } from "@mui/material";
 import Input from "dh-marvel/components/Input/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -11,91 +11,62 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CustomizedSnackbars from "../StackBar/StackBar";
+import * as yup from "yup";
+import { yupResolver } from '@hookform/resolvers/yup';
+import styles from './CheckoutForm.module.css'
+import { useBuyContext } from "../Provider/BuyProvider";
 
 const steps = ['Datos Personales', 'Datos de Entrega', 'Datos de Tarjeta'];
 
+const schema = yup.object({
+    name: yup.string().required("El Nombre es requerido."),
+    surname: yup.string().required("El Apellido es requerido."),
+    email: yup.string().email("Debe contener un formato correcto.").required("El Email es requerido."),
+    // direccion: yup.string().min(5, "es minimo").required("El Dirección es requerida."),
+    // departamento: yup.string(),
+    // ciudad: yup.string().required("La Ciudad es requerida."),
+    // provincia: yup.string().required("La Pronvicina es requerida."),
+    // codigoPostal: yup.number().required("El Código Postal es requerido."),
+    // numeroTarjeta: yup.number().required("El Número de la Tarjeta es requerido."),
+    // nombreTarjeta: yup.number().required("El Nombre de la Tarjeta es requerido."),
+    // fechaExpiracion: yup.number().required("La Fecha de Expiración es requerida."),
+    // codigoSeguridad: yup.number().required("El Código de Seguridad es requerido."),
+}).required();
+
 const CheckoutForm = ({ comic }: any) => {
-    const { handleSubmit, formState: { errors }, control } = useForm();
+
+
+    const { handleSubmit, formState: { errors }, control } = useForm({
+        resolver: yupResolver(schema)
+    });
     const [openAlert, setOpenAlert] = useState(false);
     const [alertCode, setAlertCode] = useState(200);
-    const [alertSeverity, setAlertSeverity] = useState<AlertProps['severity']>('success');
     const [alertMessage, setAlertMessage] = useState('');
 
-    // Input name props
-    const nameHelperText = errors.name?.type === 'required' ? 'Este campo es requerido' : '';
-    const nameError = Boolean(errors.name);
-
-    // Input surname props
-    const surnameHelperText = errors.surname?.type === 'required' ? 'Este campo es requerido' : '';
-    const surnameError = Boolean(errors.surname);
-
-    // Input email props
-    const emailHelperText = errors.email?.type === 'required' ? 'Este campo es requerido' : '';
-    const emailError = Boolean(errors.email);
-
-    // Input dirección props
-    const direccionHelperText = errors.direccion?.type === 'required' ? 'Este campo es requerido' : '';
-    const direccionError = Boolean(errors.direccion);
-
-    // Input departamento props
-    const departamentoHelperText = errors.departamento?.type === 'required' ? 'Este campo es requerido' : '';
-    const departamentoError = Boolean(errors.departamento);
-
-    // Input ciudad props
-    const ciudadHelperText = errors.ciudad?.type === 'required' ? 'Este campo es requerido' : '';
-    const ciudadError = Boolean(errors.ciudad);
-
-    // Input provincia props
-    const provinciaHelperText = errors.provincia?.type === 'required' ? 'Este campo es requerido' : '';
-    const provinciaError = Boolean(errors.provincia);
-
-    // Input codigoPostal props
-    const codigoPostalHelperText = errors.codigoPostal?.type === 'required' ? 'Este campo es requerido' : '';
-    const codigoPostalError = Boolean(errors.codigoPostal);
-
-    // Input numeroTarjeta props
-    const numeroTarjetaHelperText = errors.numeroTarjeta?.type === 'required' ? 'Este campo es requerido' : '';
-    const numeroTarjetaError = Boolean(errors.numeroTarjeta);
-
-    // Input fechaExpiracion props
-    const fechaExpiracionHelperText = errors.fechaExpiracion?.type === 'required' ? 'Este campo es requerido' : '';
-    const fechaExpiracionError = Boolean(errors.fechaExpiracion);
-
-    // Input nombreTarjeta props
-    const nombreTarjetaHelperText = errors.nombreTarjeta?.type === 'required' ? 'Este campo es requerido' : '';
-    const nombreTarjetaError = Boolean(errors.nombreTarjeta);
-
-    // Input codigoSeguridad props
-    const codigoSeguridadHelperText = errors.codigoSeguridad?.type === 'required' ? 'Este campo es requerido' : '';
-    const codigoSeguridadError = Boolean(errors.codigoSeguridad);
+    const { customer, addBuyer, card, order } = useBuyContext();
 
     const onSubmit = async (data: any) => {
-        const buyerData = {
-            customer: {
-                name: data.name,
-                lastname: data.surname,
-                email: data.email,
-                address: {
-                    address1: data.direccion,
-                    address2: data.departamento,
-                    city: data.ciudad,
-                    state: data.provincia,
-                    zipCode: data.codigoPostal
-                }
-            },
-            card: {
-                number: data.numeroTarjeta,
-                cvc: data.codigoSeguridad,
-                expDate: data.fechaExpiracion,
-                nameOnCard: data.nombreTarjeta
-            },
-            order: {
-                name: comic?.title,
-                image: `${comic?.thumbnail.path}.${comic?.thumbnail.extension}`,
-                price: comic?.price,
+        addBuyer({
+            name: data.name,
+            lastname: data.surname,
+            email: data.email,
+            address: {
+                address1: data.direccion,
+                address2: data.departamento,
+                city: data.ciudad,
+                state: data.provincia,
+                zipCode: data.codigoPostal
             }
-        }
-        console.log(buyerData)
+        }, {
+            number: data.numeroTarjeta,
+            cvc: data.codigoSeguridad,
+            expDate: data.fechaExpiracion,
+            nameOnCard: data.nombreTarjeta
+        })
+        console.log(customer);
+        console.log(card);
+        console.log(order);
+
 
         try {
             const res = await fetch('/api/checkout', {
@@ -103,7 +74,7 @@ const CheckoutForm = ({ comic }: any) => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(buyerData)
+                body: JSON.stringify(data)
             })
             console.log(res.status)
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -112,27 +83,26 @@ const CheckoutForm = ({ comic }: any) => {
                 setAlertMessage('Compra realizada');
                 setOpenAlert(true);
                 window.location.href = `/confirmacion-compra/${comic.id}`
-            } else if (res.status === 401){
+            } else if (res.status === 401) {
                 setAlertCode(400);
                 setAlertMessage('Incorrecta dirección!');
                 setOpenAlert(true);
-            } else if (res.status === 402){
+            } else if (res.status === 402) {
                 setAlertCode(400);
                 setAlertMessage('Tarjeta sin fondos disponibles!');
                 setOpenAlert(true);
             }
-            else if (res.status === 403){
+            else if (res.status === 403) {
                 setAlertCode(400);
                 setAlertMessage('Tarjeta sin autorización!');
                 setOpenAlert(true);
             }
-            else if (res.status === 400){
+            else if (res.status === 400) {
                 setAlertCode(400);
                 setAlertMessage('Error en el sistema!');
                 setOpenAlert(true);
             }
         } catch (error) {
-            setAlertSeverity('error');
             setAlertMessage('Error al comprar');
             setOpenAlert(true);
         }
@@ -148,36 +118,30 @@ const CheckoutForm = ({ comic }: any) => {
                             label="Nombre"
                             control={control}
                             name="name"
-                            error={nameError}
-                            helperText={nameHelperText}
-                            rules={{
-                                required: true
-                            }}
+                            type="text"
+                            rules={{ required: true }}
                         />
+                        <p className={styles.errorMessage}>{errors.name?.message?.toString()}</p>
                     </Box>
                     <Box>
                         <Input
                             label="Apellido"
                             control={control}
                             name="surname"
-                            error={surnameError}
-                            helperText={surnameHelperText}
-                            rules={{
-                                required: true
-                            }}
+                            type="text"
+                            rules={{ required: true }}
                         />
+                        <p className={styles.errorMessage}>{errors.surname?.message?.toString()}</p>
                     </Box>
                     <Box>
                         <Input
-                            label="Email"
+                            label="Correo Electrónico"
                             control={control}
                             name="email"
-                            error={emailError}
-                            helperText={emailHelperText}
-                            rules={{
-                                required: true
-                            }}
+                            type="text"
+                            rules={{ required: true }}
                         />
+                        <p className={styles.errorMessage}>{errors.email?.message?.toString()}</p>
                     </Box>
                 </Stack>,
         },
@@ -190,60 +154,50 @@ const CheckoutForm = ({ comic }: any) => {
                             label="Dirección"
                             control={control}
                             name="direccion"
-                            error={direccionError}
-                            helperText={direccionHelperText}
-                            rules={{
-                                required: true
-                            }}
+                            type="text"
+                            rules={{ required: true }}
                         />
+                        <p>{errors.control?.message?.toString()}</p>
                     </Box>
                     <Box>
                         <Input
                             label="Departamento"
                             control={control}
                             name="departamento"
-                            error={departamentoError}
-                            helperText={departamentoHelperText}
-                            rules={{
-                                required: false
-                            }}
+                            type="text"
+                            rules={{ required: false }}
                         />
+                        <p>{errors.departamento?.message?.toString()}</p>
                     </Box>
                     <Box>
                         <Input
                             label="Ciudad"
                             control={control}
                             name="ciudad"
-                            error={ciudadError}
-                            helperText={ciudadHelperText}
-                            rules={{
-                                required: true
-                            }}
+                            type="text"
+                            rules={{ required: true }}
                         />
+                        <p>{errors.ciudad?.message?.toString()}</p>
                     </Box>
                     <Box>
                         <Input
                             label="Provincia"
                             control={control}
                             name="provincia"
-                            error={provinciaError}
-                            helperText={provinciaHelperText}
-                            rules={{
-                                required: true
-                            }}
+                            type="text"
+                            rules={{ required: true }}
                         />
+                        <p>{errors.provincia?.message?.toString()}</p>
                     </Box>
                     <Box>
                         <Input
                             label="Código Postal"
                             control={control}
                             name="codigoPostal"
-                            error={codigoPostalError}
-                            helperText={codigoPostalHelperText}
-                            rules={{
-                                required: true
-                            }}
+                            type="text"
+                            rules={{ required: true }}
                         />
+                        <p>{errors.codigoPostal?.message?.toString()}</p>
                     </Box>
                 </Stack>,
         },
@@ -255,48 +209,40 @@ const CheckoutForm = ({ comic }: any) => {
                         label="Número de Tajerta"
                         control={control}
                         name="numeroTarjeta"
-                        error={numeroTarjetaError}
-                        helperText={numeroTarjetaHelperText}
-                        rules={{
-                            required: true
-                        }}
+                        type="text"
+                        rules={{ required: false }}
                     />
+                    <p>{errors.numeroTarjeta?.message?.toString()}</p>
                 </Box>
                 <Box>
                     <Input
                         label="Nombre en la Tarjeta"
                         control={control}
                         name="nombreTarjeta"
-                        error={nombreTarjetaError}
-                        helperText={nombreTarjetaHelperText}
-                        rules={{
-                            required: true
-                        }}
+                        type="text"
+                        rules={{ required: false }}
                     />
+                    <p>{errors.nombreTarjeta?.message?.toString()}</p>
                 </Box>
                 <Box>
                     <Input
                         label="Fecha de Expiración"
                         control={control}
                         name="fechaExpiracion"
-                        error={fechaExpiracionError}
-                        helperText={fechaExpiracionHelperText}
-                        rules={{
-                            required: true
-                        }}
+                        type="text"
+                        rules={{ required: false }}
                     />
+                    <p>{errors.fechaExpiracion?.message?.toString()}</p>
                 </Box>
                 <Box>
                     <Input
                         label="Código de Seguridad"
                         control={control}
                         name="codigoSeguridad"
-                        error={codigoSeguridadError}
-                        helperText={codigoSeguridadHelperText}
-                        rules={{
-                            required: true
-                        }}
+                        type="password"
+                        rules={{ required: false }}
                     />
+                    <p>{errors.codigoSeguridad?.message?.toString()}</p>
                 </Box>
             </Stack>,
         },
@@ -330,13 +276,24 @@ const CheckoutForm = ({ comic }: any) => {
                             {step.description}
                             <Box sx={{ mb: 2 }}>
                                 <div>
-                                    <Button
-                                        variant="contained"
-                                        onClick={handleSubmit(onSubmit)}
-                                        sx={{ mt: 1, mr: 1 }}
-                                    >
-                                        {index === steps.length - 1 ? 'COMPRAR' : 'CONTINUAR'}
-                                    </Button>
+
+                                    {index === steps.length - 1 ? (
+                                        <Button
+                                            variant="contained"
+                                            onClick={handleSubmit(onSubmit)}
+                                            sx={{ mt: 1, mr: 1 }}
+                                        >
+                                            COMPRAR
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="contained"
+                                            onClick={handleSubmit(onSubmit)}
+                                            sx={{ mt: 1, mr: 1 }}
+                                        >
+                                            CONTINUAR
+                                        </Button>
+                                    )}
                                     <Button
                                         disabled={index === 0}
                                         onClick={handleBack}
@@ -350,15 +307,17 @@ const CheckoutForm = ({ comic }: any) => {
                     </Step>
                 ))}
             </Stepper>
-            {activeStep === steps.length && (
-                <Paper square elevation={0} sx={{ p: 3 }}>
-                    <CustomizedSnackbars alertCode={alertCode} alertMessage={alertMessage} open={openAlert} setOpen={setOpenAlert} />
-                    <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                        Reset
-                    </Button>
-                </Paper>
-            )}
-        </Box>
+            {
+                activeStep === steps.length && (
+                    <Paper square elevation={0} sx={{ p: 3 }}>
+                        <CustomizedSnackbars alertCode={alertCode} alertMessage={alertMessage} open={openAlert} setOpen={setOpenAlert} />
+                        <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+                            Reset
+                        </Button>
+                    </Paper>
+                )
+            }
+        </Box >
     );
 }
 

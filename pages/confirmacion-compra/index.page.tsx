@@ -1,19 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
+import { CircularProgress } from '@mui/material';
 import BodySingle from 'dh-marvel/components/layouts/body/single/body-single';
-import { getComic, getComics } from 'dh-marvel/services/marvel/marvel.service';
-import { GetStaticPaths, GetStaticProps } from 'next';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
+import { useBuyContext } from 'dh-marvel/components/Provider/BuyProvider';
+import { useRouter } from 'next/router';
 
-const confirmacionCompra = ({ data }: any) => {
+const ConfirmacionCompra = () => {
+
+  const { customer, order } = useBuyContext();
+  const router = useRouter();
+  const [redirect, setRedirect] = useState(true)
+
+  useEffect(() => {
+    if (order.name === "") {
+      setRedirect(true)
+    }
+    setTimeout(()=>{
+      router.push("/")
+    },1000)
+  }, [order, router, redirect, setRedirect]);
+
   return (
     <BodySingle title="">
-      <Box
+      {!redirect ? <Box
         sx={{
           width: "90%",
           paddingTop: 5,
@@ -29,16 +44,16 @@ const confirmacionCompra = ({ data }: any) => {
             Datos del Usuario
           </Typography>
           <Typography variant="subtitle2">
-            <span style={{ fontWeight: 'bold' }}>Nombre:</span>
+            <span style={{ fontWeight: 'bold' }}>Nombre: {customer.name}</span>
           </Typography>
           <Typography variant="subtitle2">
-            <span style={{ fontWeight: 'bold' }}>Apellido:</span>
+            <span style={{ fontWeight: 'bold' }}>Apellido: {customer.lastname}</span>
           </Typography>
           <Typography variant="subtitle2">
-            <span style={{ fontWeight: 'bold' }}>Email:</span>
+            <span style={{ fontWeight: 'bold' }}>Email: {customer.email}</span>
           </Typography>
           <Typography variant="subtitle2">
-            <span style={{ fontWeight: 'bold' }}>Dirección de Entrega:</span>
+            <span style={{ fontWeight: 'bold' }}>Dirección de Entrega: {customer.address.address1}, {customer.address.city}, {customer.address.state}</span>
           </Typography>
           <Typography variant="subtitle2">
             <span style={{ fontWeight: 'bold' }}>Estado de entrega:</span> despachado.
@@ -53,41 +68,24 @@ const confirmacionCompra = ({ data }: any) => {
               flexDirection: "column"
             }}>
               <Image
-                src={`${data.thumbnail.path}.${data.thumbnail.extension}`}
-                alt={data.title}
+                src={order.image}
+                alt={order.name}
                 width={250}
                 height={250}
               />
               <Typography variant="h5">
-                {data.title}
+                {order.name}
+              </Typography>
+              <Typography>
+                ${order.price}.00
               </Typography>
             </CardContent>
           </Card>
         </Stack>
-      </Box>
+      </Box> :
+    <CircularProgress />}
     </BodySingle>
   )
 }
 
-export default confirmacionCompra
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const id = params?.id?.toString() || '0'
-  const comic = await getComic(parseInt(id))
-  return {
-    props: {
-      data: comic
-    }
-  }
-}
-export const getStaticPaths: GetStaticPaths = async () => {
-  const data = await getComics();
-  const paths = data.data.results.map((data: any) => {
-    return { params: { id: data.id.toString() } }
-  })
-  return {
-    paths,
-    fallback: 'blocking'
-  }
-
-}
+export default ConfirmacionCompra
