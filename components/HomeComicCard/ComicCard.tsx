@@ -9,7 +9,7 @@ import Image from 'next/image';
 
 const HomeComicCard = ({ data }: any) => {
     return (
-        <Card sx={{ minWidth: 400, maxWidth: 300, minHeight: 400, maxHeight: 400,
+        <Card sx={{
         display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
             <CardContent>
                 <Image

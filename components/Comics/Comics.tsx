@@ -40,10 +40,11 @@ const Comics = () => {
             {
                 comics.length > 0 ?
                     <Grid container spacing={8}
+                    sx={{display: "flex", justifyContent: "center"}}
                     >
                         {comics?.map((hero: Hero) => {
                             return (
-                                <Grid key={hero.id} item xs={3} md={4}>
+                                <Grid key={hero.id} item xs={8} sm={6} md={4}>
                                     <HomeComicCard data={hero} />
                                 </Grid>
                             )
