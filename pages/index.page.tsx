@@ -1,11 +1,12 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
-import { Hero, HeroAPIResponse } from 'types';
 import Comics from 'dh-marvel/components/Comics/Comics';
+import { NextPageWithLayout } from './_app.page';
+import { ReactElement } from 'react';
+import LayoutGeneral from 'dh-marvel/components/layouts/layout-general';
 
-// const Index: NextPage<{data : HeroAPIResponse}> = ({data} : {data : HeroAPIResponse}) => {
-const Index: NextPage = () => {
+const Index: NextPageWithLayout<[]> = () => {
 
     return (
         <>
@@ -22,5 +23,8 @@ const Index: NextPage = () => {
     )
 }
 
+Index.getLayout = function getLayout(page: ReactElement) {
+    return <LayoutGeneral>{page}</LayoutGeneral>
+}
 
 export default Index

@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import HomeComicCard from '../HomeComicCard/ComicCard';
 import { Box, CircularProgress, Pagination } from '@mui/material';
 import { Hero } from 'types';
+import { Comic } from 'types/comic';
 
 const Comics = () => {
 
@@ -42,10 +43,10 @@ const Comics = () => {
                     <Grid container spacing={8}
                     sx={{display: "flex", justifyContent: "center"}}
                     >
-                        {comics?.map((hero: Hero) => {
+                        {comics?.map((comic: Comic) => {
                             return (
-                                <Grid key={hero.id} item xs={8} sm={6} md={4}>
-                                    <HomeComicCard data={hero} />
+                                <Grid key={comic.id} item xs={8} sm={6} md={4}>
+                                    <HomeComicCard comic={comic} />
                                 </Grid>
                             )
                         })}

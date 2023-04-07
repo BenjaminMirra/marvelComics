@@ -10,8 +10,15 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Comic, Comics } from 'types/comic';
+import { Character } from 'types/character';
 
-export default function CharacterCard({ character, comics }: any) {
+interface Props{
+    character: Character,
+    comics: Comics,
+}
+
+export default function CharacterCard({ character, comics }: Props) {
 
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -44,7 +51,7 @@ export default function CharacterCard({ character, comics }: any) {
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
-                            {comics?.map((comic: any) => {
+                            {comics?.map((comic: Comic) => {
                                 return (
                                     <Link
                                         key={comic.id}

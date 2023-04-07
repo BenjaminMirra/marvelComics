@@ -5,6 +5,10 @@ import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import ButtonBase from '@mui/material/ButtonBase';
 import { styled } from '@mui/material/styles';
+import { useBuyContext } from '../Provider/BuyProvider';
+import { useRouter } from 'next/router';
+import { Comic } from 'types/comic';
+import { Character, Characters } from 'types/character';
 
 const Img = styled('img')({
     display: 'flex',
@@ -13,7 +17,24 @@ const Img = styled('img')({
     paddingRight: '20px'
 });
 
-const ComicCard = ({ comic, characters }: any) => {
+interface Props {
+    comic: Comic,
+    characters: Characters
+}
+
+const ComicCard = ({ comic, characters }: Props) => {
+
+    const { setOrder } = useBuyContext();
+    const router = useRouter()
+
+    const addOrder = () =>{
+        setOrder({
+            name: comic.title,
+            image: `${comic.thumbnail.path}.${comic.thumbnail.extension}`,
+            price: comic.price
+        })
+        router.push("/checkout")
+    }
 
     return (
     <Paper
@@ -45,7 +66,7 @@ const ComicCard = ({ comic, characters }: any) => {
                             <span style={{ fontWeight: 1000 }}>Personajes:</span>
                         </Typography>
                         <Typography variant="subtitle1" color="text.secondary">
-                            {characters.map((char: any) => {
+                            {characters.map((char: Character) => {
                                 return (
                                     <Link
                                         key={char.id}
@@ -61,7 +82,7 @@ const ComicCard = ({ comic, characters }: any) => {
                     <Grid item>
                         <Typography sx={{ cursor: 'pointer' }} variant="body2">
                             {comic.stock != 0 ?
-                                <Button href={`/checkout/${comic.id}`} variant="contained">
+                                <Button onClick={addOrder} variant="contained">
                             COMPRAR
                         </Button>
                         :

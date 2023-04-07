@@ -1,21 +1,29 @@
 import type { AppProps } from 'next/app'
-import { Button, CssBaseline, ThemeProvider } from "@mui/material";
-import LayoutGeneral from "dh-marvel/components/layouts/layout-general";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "dh-marvel/styles/material-theme";
+import { NextPage } from 'next';
+import { ReactElement, ReactNode } from 'react';
 import BuyContextProvider from 'dh-marvel/components/Provider/BuyProvider';
 
-function MyApp({ Component, pageProps }: AppProps) {
 
+export type NextPageWithLayout<T> = NextPage<T> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout<unknown>
+}
+
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page)
 
   return (
     <ThemeProvider theme={theme}>
       <BuyContextProvider>
-
         <CssBaseline />
-        <LayoutGeneral>
-          
-          <Component {...pageProps}/>
-        </LayoutGeneral>
+
+        {getLayout(<Component {...pageProps} />)}
         <style jsx global>{`
               /* Other global styles such as 'html, body' etc... */
 

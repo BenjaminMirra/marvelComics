@@ -1,20 +1,32 @@
 import { getCharactersComic, getComic, getComics } from 'dh-marvel/services/marvel/marvel.service';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import React, { useEffect } from 'react'
+import React, { ReactElement } from 'react'
 import ComicCard from 'dh-marvel/components/ComicCard/Comic';
 import BodySingle from 'dh-marvel/components/layouts/body/single/body-single';
-import { useUserContext } from 'dh-marvel/components/Provider/UserProvider';
 import { useBuyContext } from 'dh-marvel/components/Provider/BuyProvider';
+import { NextPageWithLayout } from '../_app.page';
+import LayoutGeneral from 'dh-marvel/components/layouts/layout-general';
+import { Comic } from 'types/comic';
+import { Characters } from 'types/character';
 
-const ComicId = ({ comic , characters }: any) => {
+interface Props{
+  comic: Comic,
+  characters: Characters
+}
 
-  const { order, addOrder } = useBuyContext();
+const ComicId: NextPageWithLayout<Props> = ({ comic , characters }: Props) => {
+
+  const { order } = useBuyContext();
 
   return (
     <BodySingle title={comic.title}>
-      <ComicCard order={order} setOrder={addOrder} comic={comic} characters={characters}/>
+      <ComicCard comic={comic} characters={characters}/>
     </BodySingle>
   )
+}
+
+ComicId.getLayout = function getLayout(page: ReactElement) {
+  return <LayoutGeneral>{page}</LayoutGeneral>
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
@@ -29,7 +41,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = await getComics();
-  const paths = data.data.results.map((data: any) => {
+  const paths = data.data.results.map((data: Comic) => {
     return { params: { id: data.id.toString() } }
   })
   return {
@@ -38,26 +50,5 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
 }
-
-// export const getStaticProps: GetStaticProps = async ({ params }) => {
-//   const res = await fetch(`${process.env.MARVEL_API_URL}/comics/${params?.id}?ts=1&apikey=${process.env.MARVEL_API_PUBLIC_KEY}&hash=639d2aec78a37199a9a9e83331302cac`)
-//   const data = await res.json()
-//   // Pass data to the page via props
-//   return { props: { data } }
-// }
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const res = await fetch(`${process.env.MARVEL_API_URL}/comics?ts=1&apikey=${process.env.MARVEL_API_PUBLIC_KEY}&hash=639d2aec78a37199a9a9e83331302cac`)
-//     const data = await res.json()
-//   const paths = data.data.results?.map((comic : any) => {
-//     return { params: { id: comic.id.toString() } }
-//   })
-
-//   return {
-//     paths: paths || [],
-//     fallback: 'blocking'
-//   }
-// }
-
 
 export default ComicId;

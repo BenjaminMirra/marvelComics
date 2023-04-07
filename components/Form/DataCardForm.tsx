@@ -9,7 +9,7 @@ const DataCardForm = ({ errors, gotBackStepTwo, onValidSubmit, control }: any) =
             <Stack gap={2}>
                 <Box>
                     <Input
-                        label="Número de Tajerta"
+                        label="Número de Tarjeta"
                         control={control}
                         name="numeroTarjeta"
                         type="text"

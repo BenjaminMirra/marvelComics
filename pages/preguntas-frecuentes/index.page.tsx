@@ -1,16 +1,24 @@
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material'
-import { faqsData } from 'dh-marvel/components/faqs/faqsData'
+import { FaqsType, faqsData } from 'dh-marvel/components/faqs/faqsData'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { GetStaticProps } from 'next'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import styles from './faqs.module.css'
+import { NextPageWithLayout } from '../_app.page';
+import LayoutGeneral from 'dh-marvel/components/layouts/layout-general';
 
-const Faqs = ({ data }: any) => {
+interface Faq{
+    id: string,
+    question: string,
+    answer: string
+}
+
+const Faqs : NextPageWithLayout<Faq[]> = ( data : Faq[]) => {
     return (
         <div className={styles.container}>
             <Typography variant="h4">Preguntas Frecuentes</Typography>
             <div>
-                {data?.map((faqs: any) => {
+                {data?.map((faqs: Faq) => {
                     return (<>
                         <Accordion key={faqs.id}>
                             <AccordionSummary
@@ -33,6 +41,10 @@ const Faqs = ({ data }: any) => {
         </div>
     )
 }
+
+Faqs.getLayout = function getLayout(page: ReactElement) {
+    return <LayoutGeneral>{page}</LayoutGeneral>
+  }
 
 export const getStaticProps: GetStaticProps = async () => {
     const data = faqsData;

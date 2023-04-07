@@ -1,40 +1,12 @@
 
 import { createContext, useContext, useState } from "react";
-
-interface AddressType {
-    address1: string;
-    address2: string;
-    city: string;
-    state: string;
-    zipCode: string;
-}
-
-interface CustomerType {
-    name: string;
-    lastname: string;
-    email: string;
-    address: AddressType;
-}
-
-interface CardType {
-    number: number;
-    cvc: number;
-    expDate: string;
-    nameOnCard: string;
-}
-
-interface OrderType {
-    name: string;
-    image: string;
-    price: number;
-}
-
+import { CustomerType } from "types/customer";
+import { OrderType } from "types/order";
 interface BuyContextType {
     customer: CustomerType;
-    card: CardType;
-    addBuyer: (customer: CustomerType, card : CardType) => void;
+    setCustomer: (customer: CustomerType) => void;
     order: OrderType;
-    addOrder: (order: OrderType) => void;
+    setOrder: (order: OrderType) => void;
 }
 export const buyContext = createContext<BuyContextType>({
     customer: {
@@ -49,19 +21,13 @@ export const buyContext = createContext<BuyContextType>({
             zipCode: ""
         }
     },
-    card: {
-        number: 0,
-        cvc: 0,
-        expDate: "",
-        nameOnCard: ""
-    },
     order: {
         name: "",
         image: "",
         price: 0,
     },
-    addBuyer: () => { },
-    addOrder: () => { }
+    setCustomer: () => { },
+    setOrder: () => { }
 });
 
 export const useBuyContext = (): BuyContextType =>
@@ -83,35 +49,18 @@ const BuyContextProvider = ({ children }: any) => {
         },
     });
 
-    const [card, setCard] = useState<CardType>({
-        number: 0,
-        cvc: 0,
-        expDate: "",
-        nameOnCard: "",
-    });
-
     const [order, setOrder] = useState<OrderType>({
         name: "",
         image: "",
         price: 0,
     });
 
-    const addOrder = (order: OrderType) => {
-        setOrder(order);
-    }
-
-    const addBuyer = (customer: CustomerType, card: CardType) => {
-        setCustomer(customer);
-        setCard(card);
-    }
-
     const buyerContextValue: BuyContextType = {
         order,
         customer,
-        card,
-        addBuyer,
-        addOrder
-      };
+        setCustomer,
+        setOrder
+    };
 
     return (
         <buyContext.Provider

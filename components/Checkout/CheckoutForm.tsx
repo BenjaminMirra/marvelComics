@@ -11,6 +11,8 @@ import DataAddressForm from "../Form/DataAddressForm";
 import DataCardForm from "../Form/DataCardForm";
 import { FormControl, Snackbar } from "@mui/material";
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
+import { useBuyContext } from "../Provider/BuyProvider";
+import { Router, useRouter } from "next/router";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -31,12 +33,15 @@ const schema = yup.object({
     provincia: yup.string().required("La Provincia es requerida."),
     codigoPostal: yup.number().required("El Código Postal es requerido."),
     numeroTarjeta: yup.number().required("El Número de la Tarjeta es requerido."),
-    nombreTarjeta: yup.number().required("El Nombre de la Tarjeta es requerido."),
-    fechaExpiracion: yup.number().required("La Fecha de Expiración es requerida."),
+    nombreTarjeta: yup.string().required("El Nombre de la Tarjeta es requerido."),
+    fechaExpiracion: yup.string().required("La Fecha de Expiración es requerida."),
     codigoSeguridad: yup.number().required("El Código de Seguridad es requerido."),
 }).required();
 
-const CheckoutForm = ({comic} : any) => {
+const CheckoutForm = () => {
+
+    const { setCustomer } = useBuyContext()
+    const router = useRouter()
 
     const { formState: { errors }, control, watch, trigger, handleSubmit } = useForm({
         resolver: yupResolver(schema)
@@ -45,7 +50,7 @@ const CheckoutForm = ({comic} : any) => {
     const [activeStep, setActiveStep] = useState(0);
     const [open, setOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState("")
-    const [severityMessage, setSeverityMessage] = useState<AlertColor | any>()
+    const [severityMessage, setSeverityMessage] = useState<AlertColor | any>("success")
 
     const handleClick = () => {
         setOpen(true);
@@ -97,7 +102,7 @@ const CheckoutForm = ({comic} : any) => {
         }
     }
 
-    const onValidSubmit = async (data: any) => {
+    const onValidSubmit = async () => {
         if (await checkThirdStep()) {
             const postData = {
                 customer: {
@@ -129,20 +134,21 @@ const CheckoutForm = ({comic} : any) => {
             const response = await res.json()
             console.log(JSON.stringify(response.error));
 
-            if (JSON.stringify(response.error) === `"CARD_DATA_INCORRECT"` || `"METHOD_NOT_ALLOWED"` || `"SERVER_ERROR"`) {
-                setSeverityMessage("warning")
-                setAlertMessage(JSON.stringify(response.message))
+            if (JSON.stringify(response?.error) === `"CARD_DATA_INCORRECT2` || `METHOD_NOT_ALLOWED` || `SERVER_ERROR"`) {
+                setAlertMessage(JSON.stringify(response?.message))
+                setSeverityMessage("error")
             }
-            if (JSON.stringify(response.error) === `"CARD_WITHOUT_FUNDS"` || `"CARD_WITHOUT_AUTHORIZATION"` || `"INCORRECT_ADDRESS"`) {
+            if (JSON.stringify(response?.error) === `"CARD_WITHOUT_FUNDS"` || `"CARD_WITHOUT_AUTHORIZATION"` || `"INCORRECT_ADDRESS"`) {
+                setAlertMessage(JSON?.stringify(response?.message))
                 setSeverityMessage("warning")
-                setAlertMessage(JSON.stringify(response.message))
             }
-            if(JSON.stringify(response.data)){
-                setSeverityMessage("success")
+            if(JSON.stringify(response?.data)){
                 setAlertMessage(`"Compra realizada"`)
+                setSeverityMessage("success")
+                setCustomer(postData.customer)
+                router.push("/confirmacion-compra")
             };
             handleClick()
-            window.location.href = `/confirmacion-compra/${comic?.id}`
         }
     }
     return (
