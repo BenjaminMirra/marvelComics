@@ -15,7 +15,7 @@ const Input: FC<Props> = ({ control, name, rules, ...props }) => {
         control,
         rules,
     });
-    return <TextField sx={{width: 500}} {...field} {...props} />;
+    return <TextField sx={{width: "100%"}} {...field} {...props} />;
 };
 
 export default Input;

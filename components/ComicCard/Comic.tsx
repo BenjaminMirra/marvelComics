@@ -13,26 +13,9 @@ const Img = styled('img')({
     paddingRight: '20px'
 });
 
-const ComicCard = ({ order, setOrder, comic, characters }: any) => {
+const ComicCard = ({ comic, characters }: any) => {
 
-        
-    const setearOrden = useCallback(()=>{
-        setOrder({
-            name: comic?.title,
-            image: `${comic?.thumbnail.path}.${comic?.thumbnail.extension}`,
-            price: comic?.price,
-        })      
-    },[setOrder,comic])
-
-    useEffect(()=>{
-        if(order.name !== ""){
-            console.log(order);
-            
-            window.location.href="/checkout"
-        }
-    },[order])
-
-return (
+    return (
     <Paper
         sx={{
             p: 2,
@@ -78,9 +61,7 @@ return (
                     <Grid item>
                         <Typography sx={{ cursor: 'pointer' }} variant="body2">
                             {comic.stock != 0 ?
-                                <Button onClick={
-                                    setearOrden
-                                } variant="contained">
+                                <Button href={`/checkout/${comic.id}`} variant="contained">
                             COMPRAR
                         </Button>
                         :
