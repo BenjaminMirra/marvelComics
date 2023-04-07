@@ -13,7 +13,7 @@ interface Faq{
     answer: string
 }
 
-const Faqs : NextPageWithLayout<Faq[]> = ( data : Faq[]) => {
+const Faqs : NextPageWithLayout<any> = ({data} : any) => {
     return (
         <div className={styles.container}>
             <Typography variant="h4">Preguntas Frecuentes</Typography>

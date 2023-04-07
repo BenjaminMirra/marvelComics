@@ -6,14 +6,14 @@ import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import { OrderType } from 'types/order';
 
-interface Props{
+interface Props {
   order: OrderType
 }
 
-const CheckoutComic = (order : Props) => {  
+const CheckoutComic = (order: Props) => {
 
   return (
-     <Grid sx={{width: "100%", paddingBottom: 4, display: "flex", justifyContent: "center"}}>
+    <Grid sx={{ width: "100%", paddingBottom: 4, display: "flex", justifyContent: "center" }}>
       <Card sx={{
         minWidth: 400, maxWidth: 300, minHeight: "100%", maxHeight: "100%",
       }}>
@@ -35,7 +35,7 @@ const CheckoutComic = (order : Props) => {
           </Typography>
         </CardContent>
       </Card>
-    </Grid > 
+    </Grid >
   )
 }
 
