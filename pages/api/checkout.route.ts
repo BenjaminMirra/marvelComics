@@ -32,15 +32,15 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     try {
         const body: CheckoutInput = req.body;
         if (body.customer.address.address2 === invalidAddress) {
-            res.status(401).json(ERROR_INCORRECT_ADDRESS);
+            res.status(400).json(ERROR_INCORRECT_ADDRESS);
             return
         }
         if (body.card.number === withoutFundsCard) {
-            res.status(402).json(ERROR_CARD_WITHOUT_FUNDS);
+            res.status(400).json(ERROR_CARD_WITHOUT_FUNDS);
             return
         }
         if (body.card.number === withoutAuthorizationCard) {
-            res.status(403).json(ERROR_CARD_WITHOUT_AUTHORIZATION);
+            res.status(400).json(ERROR_CARD_WITHOUT_AUTHORIZATION);
             return
         }
         if (body.card.number === validCard) {

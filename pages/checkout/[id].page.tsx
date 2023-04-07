@@ -23,7 +23,7 @@ const Checkout = ({ data }: any) => {
       <Box
         className={styles.container}
       >
-        <CheckoutForm />
+        <CheckoutForm comic={data}/>
         <CheckoutComic comic={data} />
       </Box>
     </BodySingle>

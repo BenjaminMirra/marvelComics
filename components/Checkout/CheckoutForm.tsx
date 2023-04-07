@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { SyntheticEvent, forwardRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -9,7 +9,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import DataUserForm from "../Form/DataUserForm";
 import DataAddressForm from "../Form/DataAddressForm";
 import DataCardForm from "../Form/DataCardForm";
-import { FormControl } from "@mui/material";
+import { FormControl, Snackbar } from "@mui/material";
+import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
+
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const steps = ['Datos Personales', 'Datos de Entrega', 'Datos de Tarjeta'];
 
@@ -28,13 +36,27 @@ const schema = yup.object({
     codigoSeguridad: yup.number().required("El Código de Seguridad es requerido."),
 }).required();
 
-const CheckoutForm = () => {
+const CheckoutForm = ({comic} : any) => {
 
-    const { formState: { errors }, control,watch, trigger, handleSubmit } = useForm({
+    const { formState: { errors }, control, watch, trigger, handleSubmit } = useForm({
         resolver: yupResolver(schema)
     });
 
     const [activeStep, setActiveStep] = useState(0);
+    const [open, setOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("")
+    const [severityMessage, setSeverityMessage] = useState<AlertColor | any>()
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
 
     const checkFirstStep = async (e: any) => {
         e.preventDefault()
@@ -76,15 +98,53 @@ const CheckoutForm = () => {
     }
 
     const onValidSubmit = async (data: any) => {
-        if(await checkThirdStep()){
-            console.log(data);
-        }else{
-            console.log("hay errores baby");
+        if (await checkThirdStep()) {
+            const postData = {
+                customer: {
+                    name: watch().name,
+                    lastname: watch().surname,
+                    email: watch().email,
+                    address: {
+                        address1: watch().direccion,
+                        address2: watch().departamento,
+                        city: watch().ciudad,
+                        state: watch().provincia,
+                        zipCode: watch().codigoPostal
+                    }
+                },
+                card: {
+                    number: watch().numeroTarjeta,
+                    cvc: watch().codigoSeguridad,
+                    expDate: watch().fechaExpiracion,
+                    nameOnCard: watch().nombreTarjeta
+                }
+            }
+            const res = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(postData)
+            })
+            const response = await res.json()
+            console.log(JSON.stringify(response.error));
+
+            if (JSON.stringify(response.error) === `"CARD_DATA_INCORRECT"` || `"METHOD_NOT_ALLOWED"` || `"SERVER_ERROR"`) {
+                setSeverityMessage("warning")
+                setAlertMessage(JSON.stringify(response.message))
+            }
+            if (JSON.stringify(response.error) === `"CARD_WITHOUT_FUNDS"` || `"CARD_WITHOUT_AUTHORIZATION"` || `"INCORRECT_ADDRESS"`) {
+                setSeverityMessage("warning")
+                setAlertMessage(JSON.stringify(response.message))
+            }
+            if(JSON.stringify(response.data)){
+                setSeverityMessage("success")
+                setAlertMessage(`"Compra realizada"`)
+            };
+            handleClick()
+            window.location.href = `/confirmacion-compra/${comic?.id}`
         }
     }
-    
-    console.log("watch", watch())
-
     return (
         <Box sx={{ width: '100%', paddingRight: 5 }}>
             <Stepper activeStep={activeStep}>
@@ -96,11 +156,16 @@ const CheckoutForm = () => {
                     );
                 })}
             </Stepper>
-            <FormControl sx={{width: "100%", padding: 5}} onSubmit={handleSubmit(onValidSubmit)}>
+            <FormControl sx={{ width: "100%", padding: 5 }} onSubmit={handleSubmit(onValidSubmit)}>
                 {activeStep === 0 && <DataUserForm checkFirstStep={checkFirstStep} control={control} errors={errors} />}
                 {activeStep === 1 && <DataAddressForm checkSecondStep={checkSecondStep} gotBackStepOne={gotBackStepOne} control={control} errors={errors} />}
                 {activeStep === 2 && <DataCardForm onValidSubmit={onValidSubmit} gotBackStepTwo={gotBackStepTwo} control={control} errors={errors} />}
             </FormControl>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity={severityMessage} sx={{ width: '100%' }}>
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 }
