@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -11,23 +11,26 @@ import { useRouter } from 'next/router';
 
 const HomeComicCard = ({ comic }: any) => {
 
-    const {order, setOrder} = useBuyContext()
+    const {  setOrder } = useBuyContext()
     const router = useRouter()
 
-    const addOrder = () =>{
-        setOrder({
-            name: comic.title,
-            image: `${comic.thumbnail.path}.${comic.thumbnail.extension}`,
-            price: comic.price
-        })
-        router.push("/checkout")
-        console.log(order);
-        
+    const addOrder = () => {
+        if (comic.stock > 0) {
+            setOrder({
+                name: comic.title,
+                image: `${comic.thumbnail.path}.${comic.thumbnail.extension}`,
+                price: comic.price
+            })
+            router.push("/checkout")
+        } else {
+            router.push(`/comics/${comic.id}`)
+        }
     }
 
     return (
         <Card sx={{
-        display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+            display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"
+        }}>
             <CardContent>
                 <Image
                     src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
@@ -39,8 +42,8 @@ const HomeComicCard = ({ comic }: any) => {
                     {comic.title}
                 </Typography>
             </CardContent>
-            <CardActions sx={{minwidth:400, justifyContent: "space-around"}}>
-                <Button onClick={addOrder}>Comprar</Button>
+            <CardActions sx={{ minwidth: 400, justifyContent: "space-around" }}>
+                <Button onClick={addOrder} disabled>Comprar</Button>
                 <Button href={`/comics/${comic.id}`}>Ver Detalle</Button>
             </CardActions>
         </Card>

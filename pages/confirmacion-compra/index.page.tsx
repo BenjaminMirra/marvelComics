@@ -16,7 +16,7 @@ import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 const ConfirmacionCompra: NextPageWithLayout<[]> = () => {
 
   const { order, customer } = useBuyContext();
-  
+
   return (
     <BodySingle title="">
       <Box className={styles.container}
@@ -29,7 +29,7 @@ const ConfirmacionCompra: NextPageWithLayout<[]> = () => {
           justifyContent: "space-around"
         }}
       >
-        <Stack sx={{ paddingRight: 2,  paddingBottom: 4,}} spacing={2}>
+        <Stack sx={{ paddingRight: 2, paddingBottom: 4, }} spacing={2}>
           <Alert severity="success">¡Que disfrutes tu compra!</Alert>
           <Typography sx={{ fontWeight: 'bold' }} variant="h4">
             Datos del Usuario
@@ -50,7 +50,7 @@ const ConfirmacionCompra: NextPageWithLayout<[]> = () => {
             <span style={{ fontWeight: 'bold' }}>Estado de entrega:</span> despachado.
           </Typography>
         </Stack>
-        <Stack sx={{display: "flex", alignItems: "center", paddingBottom: 4}}>
+        <Stack sx={{ display: "flex", alignItems: "center", paddingBottom: 4 }}>
           <Card sx={{
             minWidth: 350, maxWidth: 350, minHeight: "100%", maxHeight: "100%",
           }}>
@@ -67,7 +67,7 @@ const ConfirmacionCompra: NextPageWithLayout<[]> = () => {
               <Typography variant="h5">
                 {order?.name}
               </Typography>
-              <Typography sx={{color: "green", fontWeight: 1000}}> 
+              <Typography sx={{ color: "green", fontWeight: 1000 }}>
                 ${order?.price}.00
               </Typography>
             </CardContent>
@@ -85,14 +85,14 @@ ConfirmacionCompra.getLayout = function getLayout(page: ReactElement) {
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   const { req } = context;
   const referer = req.headers.referer;
-  // if (!referer || !referer.includes('/confirmacion-compra')) {
-  //   return {
-  //     redirect: {
-  //       destination: '/',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!referer || !referer.includes('/')) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
   return {
     props: {},
   }

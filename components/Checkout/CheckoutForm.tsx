@@ -12,7 +12,8 @@ import DataCardForm from "../Form/DataCardForm";
 import { FormControl, Snackbar } from "@mui/material";
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 import { useBuyContext } from "../Provider/BuyProvider";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
+import styles from './CheckoutForm.module.css'
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -152,7 +153,7 @@ const CheckoutForm = () => {
         }
     }
     return (
-        <Box sx={{ width: '100%', paddingRight: 5 }}>
+        <Box className={styles.container} sx={{ width: '100%' }}>
             <Stepper activeStep={activeStep}>
                 {steps.map((label, index) => {
                     return (

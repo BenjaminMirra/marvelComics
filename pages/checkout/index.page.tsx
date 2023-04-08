@@ -34,16 +34,16 @@ Checkout.getLayout = function getLayout(page: ReactElement) {
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   const { req } = context;
   const referer = req.headers.referer;
-  // if (!referer || !referer.includes('/checkout')) {
-  //   return {
-  //     redirect: {
-  //       destination: '/',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!referer || !referer.includes('/')) {
+      return {
+          redirect: {
+              destination: '/',
+              permanent: false,
+          },
+      };
+  }
   return {
-    props: {},
+      props: {},
   }
 }
 
