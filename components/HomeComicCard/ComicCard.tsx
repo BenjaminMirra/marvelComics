@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 
 const HomeComicCard = ({ comic }: any) => {
 
-    const {  setOrder } = useBuyContext()
+    const { setOrder } = useBuyContext()
     const router = useRouter()
 
     const addOrder = () => {

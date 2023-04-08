@@ -9,18 +9,18 @@ import LayoutGeneral from 'dh-marvel/components/layouts/layout-general';
 import { Comic } from 'types/comic';
 import { Characters } from 'types/character';
 
-interface Props{
+interface Props {
   comic: Comic,
   characters: Characters
 }
 
-const ComicId: NextPageWithLayout<Props> = ({ comic , characters }: Props) => {
+const ComicId: NextPageWithLayout<Props> = ({ comic, characters }: Props) => {
 
   const { order } = useBuyContext();
 
   return (
     <BodySingle title={comic.title}>
-      <ComicCard comic={comic} characters={characters}/>
+      <ComicCard comic={comic} characters={characters} />
     </BodySingle>
   )
 }

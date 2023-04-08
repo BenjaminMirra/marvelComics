@@ -35,15 +35,15 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   const { req } = context;
   const referer = req.headers.referer;
   if (!referer || !referer.includes('/')) {
-      return {
-          redirect: {
-              destination: '/',
-              permanent: false,
-          },
-      };
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
   }
   return {
-      props: {},
+    props: {},
   }
 }
 

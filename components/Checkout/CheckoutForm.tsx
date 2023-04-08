@@ -143,7 +143,7 @@ const CheckoutForm = () => {
                 setAlertMessage(JSON?.stringify(response?.message))
                 setSeverityMessage("warning")
             }
-            if(JSON.stringify(response?.data)){
+            if (JSON.stringify(response?.data)) {
                 setAlertMessage(`"Compra realizada"`)
                 setSeverityMessage("success")
                 setCustomer(postData.customer)
