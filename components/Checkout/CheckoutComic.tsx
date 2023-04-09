@@ -22,7 +22,7 @@ const CheckoutComic = (order: Props) => {
           flexDirection: "column"
         }}>
           <Image
-            src={order?.order.image}
+            src={ order ? order?.order.image : ""}
             alt={order?.order.name}
             width={250}
             height={250}

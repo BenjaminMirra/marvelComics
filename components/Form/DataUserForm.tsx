@@ -38,7 +38,7 @@ const DataUserForm = ({errors, checkFirstStep, control }: any) => {
                     <p className={styles.errorMessage}>{errors.email?.message?.toString()}</p> 
                 </Box>
                 <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end"}}>
-            <Button sx={{width: 200}} variant="contained" onClick={checkFirstStep}>Siguiente</Button>
+            <Button name="Siguiente" sx={{width: 200}} variant="contained" onClick={checkFirstStep}>Siguiente</Button>
             </Box>
             </Stack>
         </>

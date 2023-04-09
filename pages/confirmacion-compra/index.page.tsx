@@ -20,14 +20,7 @@ const ConfirmacionCompra: NextPageWithLayout<[]> = () => {
   return (
     <BodySingle title="">
       <Box className={styles.container}
-        sx={{
-          width: "90%",
-          paddingTop: 5,
-          height: "100%",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-around"
-        }}
+
       >
         <Stack sx={{ paddingRight: 2, paddingBottom: 4, }} spacing={2}>
           <Alert severity="success">¡Que disfrutes tu compra!</Alert>

@@ -6,7 +6,7 @@ import { NextPageWithLayout } from './_app.page';
 import { ReactElement } from 'react';
 import LayoutGeneral from 'dh-marvel/components/layouts/layout-general';
 
-const Index: NextPageWithLayout<[]> = () => {
+const Index: NextPageWithLayout<any> = () => {
 
     return (
         <>
