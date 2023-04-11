@@ -22,7 +22,7 @@ const ConfirmacionCompra: NextPageWithLayout<[]> = () => {
       <Box className={styles.container}
 
       >
-        <Stack sx={{ paddingRight: 2, paddingBottom: 4, }} spacing={2}>
+        <Stack className={styles.dataContainer} spacing={2}>
           <Alert severity="success">¡Que disfrutes tu compra!</Alert>
           <Typography sx={{ fontWeight: 'bold' }} variant="h4">
             Datos del Usuario

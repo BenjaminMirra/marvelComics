@@ -32,11 +32,11 @@ const schema = yup.object({
     departamento: yup.string(),
     ciudad: yup.string().required("La Ciudad es requerida."),
     provincia: yup.string().required("La Provincia es requerida."),
-    codigoPostal: yup.number().required("El Código Postal es requerido."),
-    numeroTarjeta: yup.number().required("El Número de la Tarjeta es requerido."),
+    codigoPostal: yup.string().required("El Código Postal es requerido."),
+    numeroTarjeta: yup.string().required("El Número de la Tarjeta es requerido."),
     nombreTarjeta: yup.string().required("El Nombre de la Tarjeta es requerido."),
     fechaExpiracion: yup.string().required("La Fecha de Expiración es requerida."),
-    codigoSeguridad: yup.number().required("El Código de Seguridad es requerido."),
+    codigoSeguridad: yup.string().required("El Código de Seguridad es requerido."),
 }).required();
 
 const CheckoutForm = () => {
@@ -88,7 +88,7 @@ const CheckoutForm = () => {
     }
 
     const gotBackStepTwo = async () => {
-        setActiveStep(0)
+        setActiveStep(1)
     }
 
     const checkThirdStep = async () => {
