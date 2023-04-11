@@ -5,6 +5,7 @@ import Comics from 'dh-marvel/components/Comics/Comics';
 import { NextPageWithLayout } from './_app.page';
 import { ReactElement } from 'react';
 import LayoutGeneral from 'dh-marvel/components/layouts/layout-general';
+import { Button, Link} from '@mui/material';
 
 const Index: NextPageWithLayout<any> = () => {
 
@@ -18,6 +19,7 @@ const Index: NextPageWithLayout<any> = () => {
             <BodySingle title={"Comics"}>
                 
                 <Comics />
+                
             </BodySingle >
         </>
     )

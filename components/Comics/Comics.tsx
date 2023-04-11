@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid';
 import HomeComicCard from '../HomeComicCard/ComicCard';
 import { Box, CircularProgress, Pagination } from '@mui/material';
-import { Hero } from 'types';
 import { Comic } from 'types/comic';
 
 const Comics = () => {
