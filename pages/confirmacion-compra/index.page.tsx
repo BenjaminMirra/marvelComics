@@ -12,10 +12,16 @@ import LayoutCheckout from 'dh-marvel/components/layouts/layout-checkout';
 import { useBuyContext } from 'dh-marvel/components/Provider/BuyProvider';
 import styles from './index.module.css'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { useRouter } from 'next/router';
 
 const ConfirmacionCompra: NextPageWithLayout<[]> = () => {
 
   const { order, customer } = useBuyContext();
+  const router = useRouter()
+
+  if(order.name === ""){
+    router.push("/")
+  }
 
   return (
     <BodySingle title="">

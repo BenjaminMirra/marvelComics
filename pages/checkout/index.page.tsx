@@ -8,10 +8,16 @@ import LayoutCheckout from "dh-marvel/components/layouts/layout-checkout";
 import { NextPageWithLayout } from "../_app.page";
 import { useBuyContext } from "dh-marvel/components/Provider/BuyProvider";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { useRouter } from "next/router";
 
 const Checkout: NextPageWithLayout<any> = () => {
 
   const { order } = useBuyContext()
+  const router = useRouter()
+
+  if(order.name === ""){
+    router.push("/")
+  }
 
   return (
     <>
