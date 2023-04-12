@@ -6,12 +6,12 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
-import DataUserForm from "../Form/DataUserForm";
-import DataAddressForm from "../Form/DataAddressForm";
-import DataCardForm from "../Form/DataCardForm";
+import DataUserForm from "../../Form/DataUserForm";
+import DataAddressForm from "../../Form/DataAddressForm";
+import DataCardForm from "../../Form/DataCardForm";
 import { FormControl, Snackbar } from "@mui/material";
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
-import { useBuyContext } from "../Provider/BuyProvider";
+import { useBuyContext } from "../../Provider/BuyProvider";
 import { useRouter } from "next/router";
 import styles from './CheckoutForm.module.css'
 

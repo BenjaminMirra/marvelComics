@@ -2,7 +2,7 @@
 import { createContext, useContext, useState } from "react";
 import { CustomerType } from "types/customer";
 import { OrderType } from "types/order";
-interface BuyContextType {
+export interface BuyContextType {
     customer: CustomerType;
     setCustomer: (customer: CustomerType) => void;
     order: OrderType;

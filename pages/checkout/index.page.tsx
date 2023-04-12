@@ -1,6 +1,6 @@
-import CheckoutForm from "dh-marvel/components/Checkout/CheckoutForm";
+import CheckoutForm from "dh-marvel/components/Checkout/CheckoutForm/CheckoutForm";
 import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
-import CheckoutComic from "dh-marvel/components/Checkout/CheckoutComic";
+import CheckoutComic from "dh-marvel/components/Checkout/CheckoutComic/CheckoutComic";
 import { ReactElement } from "react";
 import { Box } from '@mui/material';
 import styles from './Checkout.module.css'
@@ -13,11 +13,11 @@ import { useRouter } from "next/router";
 const Checkout: NextPageWithLayout<any> = () => {
 
   const { order } = useBuyContext()
-  const router = useRouter()
+  // const router = useRouter()
 
-  if(order.name === ""){
-    router.push("/")
-  }
+  // if(order.name === ""){
+  //   router.push("/")
+  // }
 
   return (
     <>
