@@ -135,15 +135,11 @@ const CheckoutForm = () => {
             const response = await res.json()
             console.log(JSON.stringify(response.error));
 
-            if (JSON.stringify(response?.error) === `"CARD_DATA_INCORRECT2` || `METHOD_NOT_ALLOWED` || `SERVER_ERROR"`) {
+            if (response?.error) {
                 setAlertMessage(JSON.stringify(response?.message))
                 setSeverityMessage("error")
             }
-            if (JSON.stringify(response?.error) === `"CARD_WITHOUT_FUNDS"` || `"CARD_WITHOUT_AUTHORIZATION"` || `"INCORRECT_ADDRESS"`) {
-                setAlertMessage(JSON?.stringify(response?.message))
-                setSeverityMessage("warning")
-            }
-            if (JSON.stringify(response?.data)) {
+            else {
                 setAlertMessage(`"Compra realizada"`)
                 setSeverityMessage("success")
                 setCustomer(postData.customer)
