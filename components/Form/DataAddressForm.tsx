@@ -59,8 +59,8 @@ const DataAddressForm = ({ errors, checkSecondStep, gotBackStepOne, control }: a
                 </Box>
                 <Typography sx={{ color: "gray" }} variant="overline">* required</Typography>
                 <Box sx={{ width: "100%", display: "flex", justifyContent: "space-around" }}>
-                    <Button sx={{ width: 200 }} onClick={gotBackStepOne} variant="outlined">Atrás</Button>
-                    <Button sx={{ width: 200 }} onClick={checkSecondStep} variant="contained">Siguiente</Button>
+                    <Button role="atras1" sx={{ width: 200 }} onClick={gotBackStepOne} variant="outlined">Atrás</Button>
+                    <Button role="siguiente2" sx={{ width: 200 }} onClick={checkSecondStep} variant="contained">Siguiente</Button>
                 </Box>
             </Stack>
         </>

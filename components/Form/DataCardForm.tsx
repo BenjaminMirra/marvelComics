@@ -9,7 +9,7 @@ const DataCardForm = ({ errors, gotBackStepTwo, onValidSubmit, control }: any) =
             <Stack gap={2}>
                 <Box>
                     <Input
-                        label="Número de Tarjeta: 424242 4242 4242 to success *"
+                        label="Numero de Tarjeta"
                         control={control}
                         name="numeroTarjeta"
                         type="text"
@@ -20,7 +20,7 @@ const DataCardForm = ({ errors, gotBackStepTwo, onValidSubmit, control }: any) =
                 </Box>
                 <Box>
                     <Input
-                        label="Nombre en la Tarjeta *"
+                        label="Nombre en la Tarjeta"
                         control={control}
                         name="nombreTarjeta"
                         type="text"
@@ -30,7 +30,7 @@ const DataCardForm = ({ errors, gotBackStepTwo, onValidSubmit, control }: any) =
                 </Box>
                 <Box>
                     <Input
-                        label="Fecha de Expiración *"
+                        label="Fecha de Expiración"
                         control={control}
                         name="fechaExpiracion"
                         type="text"
@@ -40,7 +40,7 @@ const DataCardForm = ({ errors, gotBackStepTwo, onValidSubmit, control }: any) =
                 </Box>
                 <Box>
                     <Input
-                        label="Código de Seguridad *"
+                        label="Código de Seguridad"
                         control={control}
                         name="codigoSeguridad"
                         type="password"
@@ -51,8 +51,8 @@ const DataCardForm = ({ errors, gotBackStepTwo, onValidSubmit, control }: any) =
                 </Box>
                 <Typography sx={{ color: "gray" }} variant="overline">* required</Typography>
                 <Box sx={{ width: "100%", display: "flex", justifyContent: "space-around" }}>
-                    <Button sx={{ width: 200 }} onClick={gotBackStepTwo} variant="outlined">Atrás</Button>
-                    <Button sx={{ width: 200 }} onClick={onValidSubmit} variant="contained">Comprar</Button>
+                    <Button role="atras2" sx={{ width: 200 }} onClick={gotBackStepTwo} variant="outlined">Atrás</Button>
+                    <Button role="comprar" sx={{ width: 200 }} onClick={onValidSubmit} variant="contained">Comprar</Button>
                 </Box>
             </Stack>
         </>

@@ -2,6 +2,14 @@ import { render } from '@testing-library/react';
 import CheckoutComic from './CheckoutComic';
 import { OrderType } from 'types/order';
 
+jest.mock("next/router", () => ({
+  useRouter() {
+      return {
+          push: jest.fn()
+      }
+  }
+}))
+
 describe('CheckoutComic', () => {
   it('renders the correct image, name, and price', () => {
     const order : OrderType = {

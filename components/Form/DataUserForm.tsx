@@ -39,7 +39,7 @@ const DataUserForm = ({errors, checkFirstStep, control }: any) => {
                 </Box>
                 <Typography sx={{color: "gray"}}variant="overline">* required</Typography>
                 <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end"}}>
-            <Button name="Siguiente" sx={{width: 200}} variant="contained" onClick={checkFirstStep}>Siguiente</Button>
+            <Button role="siguiente1" name="Siguiente" sx={{width: 200}} variant="contained" onClick={checkFirstStep}>Siguiente</Button>
                 
             </Box>
             </Stack>

@@ -133,8 +133,6 @@ const CheckoutForm = () => {
                 body: JSON.stringify(postData)
             })
             const response = await res.json()
-            console.log(JSON.stringify(response.error));
-
             if (response?.error) {
                 setAlertMessage(JSON.stringify(response?.message))
                 setSeverityMessage("error")
