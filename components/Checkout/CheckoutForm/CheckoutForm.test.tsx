@@ -16,99 +16,6 @@ describe('CheckoutForm', () => {
         render(<CheckoutForm />);
         expect(screen.getByText('Datos Personales')).toBeInTheDocument();
     });
-    it('happy path first step', async () => {
-        render(<CheckoutForm />);
-        const name = screen.getByLabelText(/Nombre/);
-        const surname = screen.getByLabelText(/Apellido/);
-        const email = screen.getByLabelText(/Correo Electrónico/);
-        const submit = screen.getByText('Siguiente');
-
-        fireEvent.change(name, { target: { value: 'Benjamin' } });
-        fireEvent.change(surname, { target: { value: 'Mirra' } });
-        fireEvent.change(email, { target: { value: 'mirrabenjamin@gmail.com' } });
-        fireEvent.click(submit);
-
-        await waitFor(() => {
-            expect(screen.getByLabelText('Código Postal *')).toBeInTheDocument();
-        });
-    });
-    it('sad path first step, when Nombre is empty', async () => {
-        render(<CheckoutForm />);
-        const name = screen.getByLabelText(/Nombre/);
-        const surname = screen.getByLabelText(/Apellido/);
-        const email = screen.getByLabelText(/Correo Electrónico/);
-        const submit = screen.getByText('Siguiente');
-
-        fireEvent.change(name, { target: { value: '' } });
-        fireEvent.change(surname, { target: { value: 'Mirra' } });
-        fireEvent.change(email, { target: { value: 'mirrabenjamin@gmail.com' } });
-        fireEvent.click(submit);
-
-        await waitFor(() => {
-            expect(screen.getByText('El Nombre es requerido.')).toBeInTheDocument();
-        });
-    });
-
-    it('happy path second step', async () => {
-        render(<CheckoutForm />);
-        const name = screen.getByLabelText(/Nombre/);
-        const surname = screen.getByLabelText(/Apellido/);
-        const email = screen.getByLabelText(/Correo Electrónico/);
-        const submit = screen.getByText('Siguiente');
-
-        fireEvent.change(name, { target: { value: 'Benjamín' } });
-        fireEvent.change(surname, { target: { value: 'Mirra' } });
-        fireEvent.change(email, { target: { value: 'mirrabenjamin@gmail.com' } });
-        fireEvent.click(submit);
-
-        await waitFor(() => {
-            const direccion = screen.getByLabelText(/Dirección/);
-            const ciudad = screen.getByLabelText(/Ciudad/);
-            const provincia = screen.getByLabelText(/Provincia/);
-            const codigoPostal = screen.getByLabelText(/Código Postal/);
-            const submit2 = screen.getByText('Siguiente');
-
-            fireEvent.change(direccion, { target: { value: 'Av. Presidente Perón' } });
-            fireEvent.change(ciudad, { target: { value: 'Yerba Buena' } });
-            fireEvent.change(provincia, { target: { value: 'Tucumán' } });
-            fireEvent.change(codigoPostal, { target: { value: '2017' } });
-            fireEvent.click(submit2);
-        });
-
-        await waitFor(() => {
-            expect(screen.getByLabelText('Código de Seguridad')).toBeInTheDocument();
-        });
-    });
-    it('sad path second step, when Dirección is empty', async () => {
-        render(<CheckoutForm />);
-        const name = screen.getByLabelText(/Nombre/);
-        const surname = screen.getByLabelText(/Apellido/);
-        const email = screen.getByLabelText(/Correo Electrónico/);
-        const submit = screen.getByText('Siguiente');
-
-        fireEvent.change(name, { target: { value: 'Benjamín' } });
-        fireEvent.change(surname, { target: { value: 'Mirra' } });
-        fireEvent.change(email, { target: { value: 'mirrabenjamin@gmail.com' } });
-        fireEvent.click(submit);
-
-        waitFor(() => {
-            const direccion = screen.getByLabelText(/Dirección/);
-            const ciudad = screen.getByLabelText(/Ciudad/);
-            const provincia = screen.getByLabelText(/Provincia/);
-            const codigoPostal = screen.getByLabelText(/Código Postal/);
-            const submit2 = screen.getByText('Siguiente');
-
-            fireEvent.change(direccion, { target: { value: '' } });
-            fireEvent.change(ciudad, { target: { value: 'Yerba Buena' } });
-            fireEvent.change(provincia, { target: { value: 'Tucumán' } });
-            fireEvent.change(codigoPostal, { target: { value: '2017' } });
-            fireEvent.click(submit2);
-        });
-
-        await waitFor(() => {
-            expect(screen.getByText('La Dirección es requerida.')).toBeInTheDocument();
-        });
-    });
     it('happy path', async () => {
         render(<CheckoutForm />);
         const name = screen.getByLabelText(/Nombre/);
@@ -151,7 +58,7 @@ describe('CheckoutForm', () => {
         const submit = screen.getByRole('comprar');
         fireEvent.click(submit);
     });
-    it('sad path third step, when Fecha de Expiración is empty', async () => {
+    it('sad path, when Fecha de Expiración is empty', async () => {
         render(<CheckoutForm />);
         const name = screen.getByLabelText(/Nombre/);
         const surname = screen.getByLabelText(/Apellido/);

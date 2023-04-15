@@ -7,8 +7,14 @@ import comicWithoutStock from "dh-marvel/test/mocks/comicWithoutStock";
 
 interface reqBody {
     body: {
-        address2: string
-        cardNumber: string
+        customer:{
+            address:{
+                address2: string
+            }
+        }
+        card:{
+            cardNumber: string
+        }
     }
 }
 
@@ -33,16 +39,16 @@ const handlers = [
     }),
     rest.post('/api/checkout', async (req: reqBody, res, ctx) => {
         const { body } = req;
-        if (body.address2 === "invalid") {
+        if (body.customer?.address?.address2 === "invalid") {
             return res(ctx.status(400), ctx.json({ data: { error: "Incorrect address." } }))
         }
-        if (body.cardNumber === "4111 4111 4111 4111") {
+        if (body.card?.cardNumber === "4111 4111 4111 4111") {
             return res(ctx.status(400), ctx.json({ data: { error: "Card without funds." } }))
         }
-        if (body.cardNumber === "4000 4000 4000 4000") {
+        if (body.card?.cardNumber === "4000 4000 4000 4000") {
             return res(ctx.status(400), ctx.json({ data: { error: "Card without authorization." } }))
         }
-        if (body.cardNumber === "4242 4242 4242 4242") {
+        if (body.card?.cardNumber === "4242 4242 4242 4242") {
             return res(ctx.status(200), ctx.json({ data: { body } }))
         }
         return res(ctx.status(400), ctx.json({ data: { error: "Incorrect card data." } }))
