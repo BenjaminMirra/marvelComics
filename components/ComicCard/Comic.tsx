@@ -7,7 +7,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import { styled } from '@mui/material/styles';
 import { useBuyContext } from '../Provider/BuyProvider';
 import { useRouter } from 'next/router';
-import { Comic } from 'types/comic';
+import { Comic, Item } from 'types/comic';
 import { Character, Characters } from 'types/character';
 
 const Img = styled('img')({
@@ -56,12 +56,20 @@ const ComicCard = ({ comic, characters }: Props) => {
                 <Grid item xs={12} sm container>
                     <Grid item xs container direction="column" spacing={2}>
                         <Grid item xs>
-                            <Typography gutterBottom variant="subtitle1" component="div">
-                                <span style={{ fontWeight: 1000 }}>Description:</span>
-                            </Typography>
+                            {comic.creators.items.map((item: Item) => {
+                                return (
+                                    <Typography key={comic.id} variant="body2" gutterBottom>
+                                        {`${item.role[0].toUpperCase() + item.role.substring(1)}: ${item.name}`}
+                                    </Typography>
+                                )
+                            })}
                             <Typography variant="body2" gutterBottom>
-                                {`"${comic.description}"`}
+                                <span style={{ color: "gray" }}>
+                                    Description: {`"${comic.description}"`}
+                                </span>
                             </Typography>
+
+
                             <Typography variant="subtitle1" color="text.secondary">
                                 <span style={{ fontWeight: 1000 }}>Personajes:</span>
                             </Typography>
@@ -95,7 +103,7 @@ const ComicCard = ({ comic, characters }: Props) => {
                     <Grid item>
                         <Typography variant="subtitle1" component="div">
                             {comic.price != comic.oldPrice ?
-                                <Typography sx={{ color: 'red' }} variant="body2">
+                                <Typography sx={{ color: 'red', textDecoration: "line-through" }} variant="body2">
                                     ${comic.oldPrice}.00
                                 </Typography>
                                 : ""

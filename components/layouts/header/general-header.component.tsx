@@ -21,7 +21,7 @@ const Header: FC<Props> = ({variant}: Props) => {
                     fontWeight: 700,
                     color: 'inherit',
                     textDecoration: 'none',
-                }}> DH-Marvel</MUILink>
+                }}> Marvel-Comics</MUILink>
             </NextLink>
             {variant == 'general' &&
                 <Box>

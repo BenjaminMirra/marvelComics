@@ -11,7 +11,7 @@ const GeneralFooter = () => {
               borderTop={'1px solid #eaeaea'}
         sx={{backgroundColor: '#000'}}>
             <Link
-                href="https://www.digitalhouse.com"
+                href="https://mirrabenjamin.netlify.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 display={'flex'}
@@ -21,11 +21,8 @@ const GeneralFooter = () => {
                 color={'#fff'}
                 sx={{textDecoration: 'none'}}
             >
-                Powered by{' '}
-                <Box ml={'0.5rem'} display={'flex'}   alignItems='center'
-                     justifyContent={'center'}>
-                    <Image src="https://dh-frontend.cdn.prismic.io/dh-frontend/f197059f-7cf3-4a35-a182-314ea08cb560_LogoHeader.svg" alt="Digital House Logo" width={168} height={13} />
-                </Box>
+                Desarrollo web realizado por Mirra Benjamín
+
             </Link>
         </Box>
     );

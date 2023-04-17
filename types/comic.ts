@@ -1,3 +1,8 @@
+export type Item = {
+    role: string,
+    name: string
+}
+
 export type Comic = {
     id: number,
     title: string,
@@ -6,6 +11,9 @@ export type Comic = {
         path: string,
         extension: string
     },
+    creators: {
+        items: Item[],
+    }
     price: number | any,
     oldPrice: number | any,
     stock: number | any

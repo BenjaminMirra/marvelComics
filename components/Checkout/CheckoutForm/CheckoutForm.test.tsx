@@ -58,7 +58,7 @@ describe('CheckoutForm', () => {
         const submit = screen.getByRole('comprar');
         fireEvent.click(submit);
     });
-    it('sad path, when Fecha de Expiración is empty', async () => {
+    it('sad pathnpm , when Fecha de Expiración is empty', async () => {
         render(<CheckoutForm />);
         const name = screen.getByLabelText(/Nombre/);
         const surname = screen.getByLabelText(/Apellido/);

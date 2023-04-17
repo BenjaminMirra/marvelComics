@@ -33,7 +33,7 @@ const schema = yup.object({
     ciudad: yup.string().required("La Ciudad es requerida."),
     provincia: yup.string().required("La Provincia es requerida."),
     codigoPostal: yup.string().required("El Código Postal es requerido."),
-    numeroTarjeta: yup.string().required("El Número de la Tarjeta es requerido."),
+    numeroTarjeta: yup.string().required("El Número de la Tarjeta es requerido, tendría que ser: 42424242 4242 4242."),
     nombreTarjeta: yup.string().required("El Nombre de la Tarjeta es requerido."),
     fechaExpiracion: yup.string().required("La Fecha de Expiración es requerida."),
     codigoSeguridad: yup.string().required("El Código de Seguridad es requerido."),
